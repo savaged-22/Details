@@ -18,7 +18,7 @@ v 0.1.0"""
 
 
 print(banner,"\n")
-BASE_URL = "http://192.168.1.7:8000"
+BASE_URL = "http://localhost:8090"
 BANNER = "Remember every process takes time to our server."
 
 def docs():
@@ -67,16 +67,18 @@ def get_email_info(email:str):
     print(BANNER)
     print("Investigate in our database and internet an email you want.")
     try:
-        response = requests.get(f"{BASE_URL}/api/osint/email/{email}")
+        # Usando el endpoint de ProfileSoc (Lazy Enrichment)
+        response = requests.get(f"{BASE_URL}/api/osint/profileSoc/{email}")
         print(json.dumps(response.json(), indent=2))
     except Exception as e:
         print(f"Error: {e}")
 
 def get_ip_info(ip:str):
     print(BANNER)
-    print("Investigate in our database and internet an email you want.")
+    print("Investigate in our database and internet an IP you want.")
     try:
-        response = requests.get(f"{BASE_URL}/api/osint/email/{ip}")
+        # Usando el endpoint de IPs con POST
+        response = requests.post(f"{BASE_URL}/api/osint/ips", json={"target": ip})
         print(json.dumps(response.json(), indent=2))
     except Exception as e:
         print(f"Error: {e}")
@@ -84,18 +86,19 @@ def get_ip_info(ip:str):
 
 def post_ai(prompt:str):
     print(BANNER)
-    payload = {"prompt": prompt}
-    headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
-    try:
-        response = requests.post(f"{BASE_URL}/api/AI", headers=headers, json=payload)
-        print(json.dumps(response.json(), indent=2))
-    except Exception as e:
-        print(f"Error: {e}")
+    print("[INFO] Esta función de IA (Watson) se encuentra actualmente en desarrollo.")
+    # payload = {"prompt": prompt}
+    # headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
+    # try:
+    #     response = requests.post(f"{BASE_URL}/api/AI", headers=headers, json=payload)
+    #     print(json.dumps(response.json(), indent=2))
+    # except Exception as e:
+    #     print(f"Error: {e}")
 
 def post_profile_soc():
     print(BANNER)
     warning = """
-        Warninig:
+        Warning:
 
         1.) Before insert the name of your file, verify that your file have the same structure like in 'example.txt'. 
         To preserve the quality of our database, and if you dont have the complete data for every profile you want to upload, send us the info before to the next email
@@ -105,35 +108,16 @@ def post_profile_soc():
         upload the file and finally chat directly with our Watson AI. (This feature is in progress).
     """
     print(warning)
-    time.sleep(10)
-    file = open("leaks.txt","r")
-    res =  file.readlines()
-    for line in res:
-        res_x = line.split("\t")
-        names = []
-        emails = []
-        ips = []
-        usernames = []
-        names.append(res_x[1])
-        ips.append(res_x[2])
-        emails.append(res_x[3])
-        usernames.extend([res_x[1],extract_username(res_x[3])])
-        payload = {
-            "name":names,
-            "surname":[],
-            "email":emails,
-            "urls":[],
-            "ip":ips,
-            "company":"",
-            "username":usernames,
-            "phone":[]
-        }
-        print("-----------------------------------------")
-        payload_do = json.dumps(payload)
-        print(payload_do)
-        headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
-        
-        
+    file_path = input("\nIntroduce la ruta del archivo CSV/TXT a subir (ej. leaks.txt): ").strip()
+    
+    try:
+        with open(file_path, "rb") as f:
+            print(f"Subiendo {file_path} a la base de datos...")
+            response = requests.post(f"{BASE_URL}/api/upload_csv", files={"file": f})
+            print(json.dumps(response.json(), indent=2))
+    except Exception as e:
+        print(f"Error al subir el archivo: {e}")
+
 def extract_username(email:str):
     prov = email.split("@")
     return prov[0]
