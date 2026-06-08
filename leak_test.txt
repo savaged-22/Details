@@ -1,0 +1,70 @@
+1	tcamos	70.184.120.212	chad@azfishkeeping.com	$2y$10$Zpy/PuX2bGfWg/rK2jtz0.nZmMLM.R1OAp.6lX0ijZZaCTVHxUH7a	>kq_]RtCcj=GV"Kr[4($%x>Q\\=6i6y
+2	Arthurdent	149.169.165.24	arthurdent510@gmail.com	$2y$10$30ikK6PIluoQGd38nG.i9uEnhtChGrth/h513Fml./dsPNzjbWavG	1)d[wk]+^i'ik-ne/|L+A"%=}=.,Gg
+3	M-Six Hundred	184.188.105.50	mail.markhall@gmail.com	$2y$10$f1Nn.FKbA6D/URr.5WNZreey9bOxV4Qpyz80w9GQ8TlhXmIPnuQYy	W+np3:[wdh?t1}AcCV$jYi{K1kM_?{
+4	Frick	72.201.12.162	thefrick7@yahoo.com	$2y$10$TpIJmPaJ/gemrWo4Oa2HYep2hcmqdsudgfOYOES8Hi3UKrIJfcnwC	JP'{bT;wjj({l^aC8kJI,R"ZzA2wL>
+5	Weyrman	24.251.223.15	Southern_Weyrman@hotmail.com	$2y$10$n4jfg1X4QXMFRS/aw11K0e/Xv6tQnihk2AfsYOeHLwj86NV1r4B7q	/__V)6wN-aw4h0+ZhnOv>ASv?}5gvN
+6	evolved	24.251.223.112	hhammond85@cox.net	$2y$10$RrqhAziP0ZaRThSJoW/C.OBT92Tt.FGVhvVeW6upk6FQuKxEtQymy	p[9Te$-6pp7;xL!]^wi-3Phb332,UQ
+7	KWOWW	68.2.163.128	kristinashffr213@gmail.com	ee011e16e053d8acb731e106d0c23b4e A[xYB`+$(2N{Hb]<bi|N8hK:_nzbIE	A[xYB`+$(2N{Hb]<bi|N8hK:_nzbIE
+8	RyanC	24.251.223.15	ryan@earthfriends.com	$2y$10$.UGuFh52lHFWPAqUILd8KOcYk9eEkFU1hRyGJYkEoXI90ZyyQvCnC	#RBRw_B}p2NuC$P4sL`?=]~i@k4L\\#
+9	zibba	24.251.223.15	zard0001@gmail.com	$2y$10$HsxwigwPsM7eU/qO0.Yl2uZxZbthvax8duzBaW07Aa9y0g9rziYCO	jq$~'=,\\`U=}7lc%mj=?&ok|FNnidS
+10	gcfiend	68.2.163.128	gcfiend@gmail.com	$2y$10$sjXsfFIDeAEcPALVP/yFAOPFtaMg0pLnmZC.LvJFXZ2ggyk5F3cl6	,s!]HfUL#)aNAAYQ>[e)&qNN>w|'-+
+11	DavesTest	149.169.148.181	dave.hurt@asu.edu	021d0b2d7333681cea5be8e885b13aae Uu<CYcC:=0J5Vr6Q;,R')7Ns4Ab:\\@	Uu<CYcC:=0J5Vr6Q;,R')7Ns4Ab:\\@
+12	Hsuan	66.87.130.35	Henry.juan1002@icloud.com	528518e7603987c4a327fd07e4a1c3f0 r)2a]My5{{[K3JQ:")2$y%Fh,O>JCJ	r)2a]My5{{[K3JQ:")2$y%Fh,O>JCJ
+13	jporter	72.201.243.232	jporter17@cox.net	$2y$10$60NOIArZyd9HAkQBubFUcuEUZbg4x4OdND7RcgFktqXTDacRebjNG	P+Sgiil=Zy:9_j9d.|"q^[n|@C%m,e
+14	ortie001	70.190.206.239	ortie001@yahoo.com	db333de52c9aa2fce7f1671f375f82e1 9ymdO|#5ws+I.|\\G_5FF1XgFY95p!E	9ymdO|#5ws+I.|\\G_5FF1XgFY95p!E
+15	Nibrown9	70.209.67.162	mixedreef140@icloud.com	$2y$10$sMtsv7lhkraD5LeH0H4OhO1Y.g3iJcraTFXQf6kAqpM7EoYduIwoK	'<8+okmrlLXR#od|y00tD#,~[?lO[e
+16	tatuaje08	98.165.56.222	matt@mcoddington.com	$2y$10$v904BKEPj7eY6ZQhEVAa3eJHUkRLM0LYU0xYm7EJ05BVL/cGVXfei	LkV"Uu^r&|x6&D2htOP(K8_VGx_Oth
+17	CCall	174.19.153.229	cynthiacall@msn.com	$2y$10$5rIWBjaqbJ8a7TBsxTAJpOKN.E3Mk6a4R/cgFqV9x1t42PI2./1.u	<cl8{'RKaF7p;[@xI"^:~\\HzeGu9+G
+18	Jesusmeza80	68.2.120.94	jesusmeza80@aol.com	$2y$10$Nf7h0BGp5WmG1iGzTOiR3.iM6r/P/GxaPLGyN4mGqHpuur4/kT92y	z3\\8X_m{",A-)WJxKfBi[;7o-|u~Ru
+19	Lbfnp	68.3.53.252	lbabb@cox.net	3e940d621636617eb4386cc70a7b58b6 MoM3|H:`UYZ6`L!2uK\\3]4V8)m6;{k	MoM3|H:`UYZ6`L!2uK\\3]4V8)m6;{k
+20	Aaronfc	70.184.120.212	Aaron_Clement316@msn.com	$2y$10$Ms7np1aKpgnfa4XIgI4IO.QNvgYMBOlxYEKkCtE1SMsOifyzqyz2i	LioI2a$O1AVW!4~W+0p/779_+bi#9r
+21	Willworkforchalice	68.225.222.60	beadsbyben1@gmail.com	74858fb33e8a675f7b6c4ea8dcc904c3 <b01_19d~RkL8_PuONn4JJraWF~7~n	<b01_19d~RkL8_PuONn4JJraWF~7~n
+22	Coralj	75.171.24.40	jeremyb0120@gmail.com	b2ce60340d72741e460380357c6bf1ad 5%p:m.%+,N9RB-Dx04oi(5.P<QE&&5	5%p:m.%+,N9RB-Dx04oi(5.P<QE&&5
+23	SWAddict	166.137.119.34	djpayne024@yahoo.com	$2y$10$kW4MGhzUMbTn4R59r2HOsuDDar6GKKEdsNV8v328wmTi8CxAJ3Hrq	/bRB=F<({m5}B-)6%$sM+|zQj_LA~9
+24	kloudie	68.2.147.182	nfhenley@gmail.com	008c321a586ad319b406f4b0f1091870 *lut;pwfHri=mI\\Dx7Civ/2!SR=rYF	*lut;pwfHri=mI\\Dx7Civ/2!SR=rYF
+25	MistaQPowaaa	70.176.36.193	tonyquang86@gmail.com	06e84d1f961a3b255cb36452f1cdb8cb O^uIr+i{qQ#Ekh\\4`{Cb):'=wDG6}`	O^uIr+i{qQ#Ekh\\4`{Cb):'=wDG6}`
+26	Geemanaz	174.26.44.89	garrettborn@gmail.com	$2y$10$Rz6b0DVZ6jgQdK6k76JJquaR/1i8tYudr58HbE2QVSCi.Ml9jkLnu	.>,`t7yzVAiDpV2UMX^(/q!K%_.2g}
+27	OnlyTono	98.165.174.61	aquariums@vividcgd.com	$2y$10$SnMUq/MHsaYwTUPzrpX5DeJJhH.IT/S5pQFTm3jmXHIZjNGQHFxg6	^7<%@.A`4jLz2r"fDW}~LySSQ@9!-#
+28	derekbc	72.201.12.162	mrchapman@q.com	$2y$10$PX075fzPzw./Q6Ye18ipju7/EbjUiltgKAAajJAGVqO7U7RSkGc3a	{,jv*2'=y?^iN[59mgcJw\\!Mx{4uIf
+29	SaltyTony	70.190.93.107	adefrancesco@gfnet.com	a16df9c49f63500effa77e9a8adb201d r?Hyi:l|lV<HHUU+V1~9Nh~7$ZyM'2	r?Hyi:l|lV<HHUU+V1~9Nh~7$ZyM'2
+30	SweetCoralline	68.225.208.101	anniejjenks@yahoo.com	9be087b4cd05029537e71c202f743ff4 fcS%VL]cgzQB9:P>dZU<y/^ze&K|E~	fcS%VL]cgzQB9:P>dZU<y/^ze&K|E~
+31	Reef_Logic	166.137.208.30	jcb227@nau.edu	$2y$10$MakGM6xbE5aDVWqilfVlyOTX8uziytIRIFThYNWKaZ215C2eJxHN6	-<&\\!GPs=s*"cWEX"qXP"&E(nhFi}S
+32	henchman24	70.162.86.54	4williamkoch@gmail.com	$2y$10$XtEFs6EecuKdw.XqOUf3hOPiVDnf6.XIatfMdbczb2Q/XdzbEXE1e	_F?(7YmHGqAJl-J=.sNW7~ICrZ;jpz
+33	AZBigJohn	75.172.137.25	azbigjohn@gmail.com	$2y$10$go8GWlU.9auPa1Ur99GELescPUj3Q7BTOBrAlv/bO9ZAhQ8Ap5mb2	XW':DJ0S-Q'({+A+%Ma$t,:_9Nd,4;
+34	ademster	149.169.148.181	adam@levonius.com	$2y$10$m8ShOSYqGAPGCKtcvMZ/ze9SvAqTyYFp5nlPDL2es2izhWm2ebQn.	dI5'P+p$=NsjGgv8"vwX0eD>[%4fdD
+35	Elliott	70.162.97.15	euromedstaff@gmail.com	$2y$10$fKHD3pcstkmoIJsLK6ck1.Ggs/2fFjgc//dxeXPLRpMpz5IeiuRXO	^nS"".72ytDgC#W:j\\/7K>*\\TEZ<\\:
+36	coralreefjunkie	148.167.2.30	coralreefjunkies@gmail.com	$2y$10$rhQMqFD56nzNwkXLuFNo2e4blzdhkphnNVP29BrIeIPnl5ySef9Ha	(@^0'AAg@kKk+Ym:P72'hp0bj&&kVw
+37	Tangs27	63.230.217.6	brenc1409@gmail.com	$2y$10$xbSvMp3ttBaWTatG36sXIuAkpLP7xAmrZbynKtK.e9JwOQkS.IVui	%|[sBSri<:{!cL[rnvna_ZKIHvL1Y'
+38	Azreefr	68.231.14.55	asetta@yahoo.com	$2y$10$zdKdlwxxcGBtao5Cy/vTkecBTzb9RrtSdjD/WSfVTfK3Vg8thqcsK	$Ic#A&aOuy,yLbsXpBg59WioZ?i5<2
+39	Reefoholic	68.231.66.212	reefoholics@gmail.com	$2y$10$zxqrAst..rGlEfa56PMDtOCKQj9MuiG3uADJNov1C0Y2XzsmyfuwO	=;=df$~&]jKMj"h5%MCD^OazyCaxC!
+40	swishb	75.171.114.205	rswisher_b@hotmail.com	$2y$10$j4eN2HrYwRqUyxgkddSPueJYXqnMPHLJt9Q/N2u2TP6cwxFoVmBLC	MS/F$@+C|\\%u;}z{iAY(;-{Z>I*`<B
+41	DarkSki	174.26.245.131	darkskifrags@gmail.com	bca1e3c7dff24d4687302b0065e06675 Dv?'Xs>@&L"Bs2i@c+64Sa]lF)m)7a	Dv?'Xs>@&L"Bs2i@c+64Sa]lF)m)7a
+42	jws0318	70.209.74.68	jws0318@hotmail.com	$2y$10$hpFN0O6gd93ZGsrvcR63HerMygfxYnuZU38Qbq64tfbDL9f5kU4i6	_>_@[Qv)\\.,g/%m+j<{\\3,wErF;1N7
+43	Reef Deep	24.118.105.159	info@reefdeepaquatics.com	085b160a3fa25ba583e57c0ebdb66d1c T46t9B?.R7yYlSj\\[n9*2o~(*|{'Vh	T46t9B?.R7yYlSj\\[n9*2o~(*|{'Vh
+44	REzonaKid	68.0.137.53	ari.daniel.epstein@gmail.com	$2y$10$/hxd.oWwYXcBpUHangc6ee/bpAK250okSfIPCScKos0csHQord1Fy	Q)kQ%{=bBm~YGPY"/Zzy:}'j(6.@%Y
+45	Bruce W	68.2.83.205	Brucewilliamsny@gmail.com	$2y$10$rPAumGpqSutdHciX5M/z2e9Tcp7MhxYEgCuNk7OjesSyef7Al6ORG	XHDfGKrM{h2%<y~%i*58.3!4ROc7bi
+46	Stolireef	24.251.223.15	allen@fultonfriedman.com	$2y$10$p3WTy9UeBylIW0vM0j.2ge.R5bTUFNTDKbfWg0EVir3hr84Z0Mig2	"IYI8&WTM^WG3({"zDQQ=T0CYOU:Ro
+47	Prodigy	70.190.147.55	allenvreyes@gmail.com	$2y$10$08OrCzoJEj.1BDQf5bUAR.1JwB/ie9FYyz6AK8Xd7P9H6wjSaqwq.	l*@F++,swvK!j+8PVeSbv?=}E{ROX$
+48	VanillaGorila	70.190.132.149	vanillagorila@cox.net	$2y$10$a47hslnou043TdtNbVBCtuX0phyduX6NHkh.zANmzYtsWk2oI.npG	]qPa4\\||EM-5lJ<jHGZFdl1m:ffXHI
+49	Mael	63.241.148.10	appro81@gmail.com	$2y$10$ODNrlfcCG.GGlkFaCJrIGuD1dLo6YqF2RmKg/qSQMp2b6ezVgHbju	7E/eM!|wi/KK{=})hsyRdA'/yS5>:#
+50	Atoms	72.201.16.244	dmschrdr@yahoo.com	ce586adbd0b97906d8f08d01db18edeb ]ZACeS1n|uu>l?3\\r?U'dd?rQ6YzR>	]ZACeS1n|uu>l?3\\r?U'dd?rQ6YzR>
+51	Outatime97	70.162.53.58	Outatime_97@yahoo.com	40015d40310734f7df3ec39ad2b1ae56 K}Z<G)r^TCw(rE^^"c96-Jl|!T.:)O	K}Z<G)r^TCw(rE^^"c96-Jl|!T.:)O
+52	kmbyrnes	68.2.167.217	kmbyrnes@cox.net	996d95ae7987a1173cca1bf222d730bc _GXJAC2,|LgC:XRB,$Vlt<5dv;PdN5	_GXJAC2,|LgC:XRB,$Vlt<5dv;PdN5
+53	milkereefer	98.167.247.57	pcmilke@gmail.com	9f42a88df9acf6ce278d52fdb0b7e4ae 6ZyQY"x+<hOeA3!=shA>w-xa/*=GiD	6ZyQY"x+<hOeA3!=shA>w-xa/*=GiD
+54	reefer999	140.198.160.65	tayjorge1@gmail.com	$2y$10$IoCzalOhgltkKhHqUnefFelRLegsWGt0ITB.ZBqjl8Jj.TEGLfA6G	ph>rwb'r%L.T'XGOe)0T+p~,!P]We(
+55	Louree	70.162.102.11	fiddleshe@gmail.com	19bfb1abf5eb07adcb5d7287e83a627e ^ol]+cq}+l7R*GQOOy7JO%9,;Wz>3^	^ol]+cq}+l7R*GQOOy7JO%9,;Wz>3^
+56	jake	68.99.129.245	dodge73@gmail.com	9215937313b787491ba0d84a166d0612 i>;|JqX2Jy~tVN1-hSy*U"ayS!.>>u	i>;|JqX2Jy~tVN1-hSy*U"ayS!.>>u
+57	azmtbrjason	70.209.72.23	azmtbrjason@gmail.com	05da77ddda86b1ade5b639403299a7f0 C\\:zdI*Rf"OOpe/gTl}Iv\\Qa"}YHAM	C\\:zdI*Rf"OOpe/gTl}Iv\\Qa"}YHAM
+58	sammykonga	98.167.185.49	sgeanetta@icloud.com	$2y$10$.OP6xmVCZGrj3cQNAZ7BFenbOCkVyjhw2FdEWoPWQEsQQpRsfdXiC	"^$sDB0aM~jRyG0H3zKfwJBWLs_fX]
+59	Sharkbait	70.209.64.154	indoorocean1@gmail.com	c8f65d3461ea0535849733dc61455147 kjF\\=s06jd1gJ`#9Fv4$C'V/E1"s{b	kjF\\=s06jd1gJ`#9Fv4$C'V/E1"s{b
+60	Chris Kline	68.2.167.217	Tankman72@cox.net	7d8da1391a18074922613537271af787 yl.++vf=f".)8cz#-,K]c*zNeCI1<<	yl.++vf=f".)8cz#-,K]c*zNeCI1<<
+61	reel_reef	70.210.196.78	bweiss760@gmail.com	$2y$10$y91yUeqNFfcVTWMfFdpbS./BS0iJ1PL19nHLKJlHYZWbojE9VY83.	eJKUcot$d;:3kcN_e-^EJmQ,{865O@
+62	Schupe	184.98.153.38	timschupe39@yahoo.com	$2y$10$tkHVKTUZ5DPnatKuS6aJ8u2DeowaGryaGW/BmVWGVjn05M.y302.K	@r*!7(1|O|j;$M[H)gysXOn*`-k{3\\
+63	82ndengineer	24.255.8.63	dvsclownfish1@yahoo.com	2834dc218eb8a34119bc3ac0cf9e3441 `L=i0w*AG)RA`Rj9&.YvtKW{l);)qt	`L=i0w*AG)RA`Rj9&.YvtKW{l);)qt
+64	kalakuhan	68.109.128.216	kalakuhan@gmail.com	$2y$10$AiL38VVw0ibFZUG65OPpHup7UnS6jnmVZkCkQ63xxZ5ox2mOVCVnG	osM]bs}^ifI^JF7We}gkb}uEBsXIUn
+65	red sox fan	24.251.113.215	chazjr11@gmail.com	7b4c6296d8c278c01dea82faf18c0907 ,;.;M>eqbZSk>\\*BX'l^oC^T-Fp@lT	,;.;M>eqbZSk>\\*BX'l^oC^T-Fp@lT
+66	Brew132	166.137.209.23	kentram@gmail.com	0c098d8267bf9b00e0ec1a6d044773e8 $>2Mj)G[{R^9$LKJt5J'9fl&a:zacE	$>2Mj)G[{R^9$LKJt5J'9fl&a:zacE
+67	Tanker99	70.162.33.40	justinn04950@yahoo.com	d3ae0e8fc7c0cceeff3582e9de53fb7f /'I`no}@\\!;.4QteZ<V,4;;qso]f2x	/'I`no}@\\!;.4QteZ<V,4;;qso]f2x
+68	Dangerwill	70.190.3.88	willrobinson79@hotmail.com	$2y$10$yyh3NV86UEX4wOssXHF7R.km6nW82.2DksCvhsi0ZO0kLIqasz2Ki	F0q&6Dv_f@p2KUB^9xow.:B-MoMM8'
+69	E350	70.209.71.238	creyes350@gmail.com	6cc90d315a79e3870a1d52750d5325a8 \\5VRo&c7^ufu&@it1Mh2AVenOVhBGL	\\5VRo&c7^ufu&@it1Mh2AVenOVhBGL
+70	gojk	174.126.180.78	jgojkovich@cox.net	$2y$10$A316GUNGsWKWybVuAM31JOjssBY/EbiCnFawBAV7uRipd9m56yVEu	Yn)"`>>|S/"WtPV+1z_&!.,!ocQP?"
