@@ -3,6 +3,12 @@ import requests
 import json
 import sys
 import time
+import os
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass # In case dotenv is not installed
 
 banner = """
   █     █░ ▄▄▄     ▄▄▄█████▓  ██████  ▒█████   ███▄    █
@@ -16,9 +22,10 @@ banner = """
     ░          ░                 ░      ░ ░           ░
 v 0.1.0"""
 
-
 print(banner,"\n")
-BASE_URL = "http://localhost:8090"
+BASE_URL = os.getenv("BASE_URL")
+API_TOKEN = os.getenv("API_TOKEN")
+
 BANNER = "Remember every process takes time to our server."
 
 def docs():
@@ -26,12 +33,13 @@ def docs():
         === Documentación CLI OSINT ===
 
         Uso:
-            python osint_tool.py [opciones]
+            python main.py [opciones]
 
         Opciones:
-            --email <email>        Realiza GET a /api/osint/email/{email}
-            --ip <ip>              Realiza GET a /api/osint/ip/{ip}
-            --AI <prompt>          Realiza POST a /api/AI con un prompt
+            --email <email>        Realiza búsqueda por email
+            --ip <ip>              Realiza búsqueda por IP
+            --username <user>      Realiza búsqueda por username
+            --domain <domain>      Realiza búsqueda por dominio
             --Docs                 Muestra esta ayuda
 
         Si no se proporcionan argumentos, se inicia el menú interactivo.
@@ -47,112 +55,62 @@ def docs():
             You send us a a request to analyze an email, ip address, phone, username, or Company.
             After we do our process to check for information through internet and our databases, we return information to you in a raw format and at the same time. 
             We send the information to our AI Agent to help you to understand the payload. 
-
-        3. Power by IA?
-            Yes, our AI agent Watson works with the data we find and store in our database help to clarify the payload.
-            That's thereason we gave that cool name to the tool, cause we find you as a great researcher like sherlock homes.
-            But every sherlock need a watson and that is what we want to give you.
-        
-        4. Why use watson?
-            Give any reason to use watson, the idea is to increase the posibilities to any kind of usage. 
-            With the help from our community, we want to improve watson to make it better.
-        
-        5. what inspire us to create this tool?
-            From our point of view we want to help the people to investigate from any kind of source about "people"
-            to make a better job to make a better world.
     """
     print(readme)
 
-def get_email_info(email:str):
+def perform_search(query_type: str, query_value: str):
     print(BANNER)
-    print("Investigate in our database and internet an email you want.")
-    try:
-        # Usando el endpoint de ProfileSoc (Lazy Enrichment)
-        response = requests.get(f"{BASE_URL}/api/osint/profileSoc/{email}")
-        print(json.dumps(response.json(), indent=2))
-    except Exception as e:
-        print(f"Error: {e}")
-
-def get_ip_info(ip:str):
-    print(BANNER)
-    print("Investigate in our database and internet an IP you want.")
-    try:
-        # Usando el endpoint de IPs con POST
-        response = requests.post(f"{BASE_URL}/api/osint/ips", json={"target": ip})
-        print(json.dumps(response.json(), indent=2))
-    except Exception as e:
-        print(f"Error: {e}")
-    pass
-
-def post_ai(prompt:str):
-    print(BANNER)
-    print("[INFO] Esta función de IA (Watson) se encuentra actualmente en desarrollo.")
-    # payload = {"prompt": prompt}
-    # headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
-    # try:
-    #     response = requests.post(f"{BASE_URL}/api/AI", headers=headers, json=payload)
-    #     print(json.dumps(response.json(), indent=2))
-    # except Exception as e:
-    #     print(f"Error: {e}")
-
-def post_profile_soc():
-    print(BANNER)
-    warning = """
-        Warning:
-
-        1.) Before insert the name of your file, verify that your file have the same structure like in 'example.txt'. 
-        To preserve the quality of our database, and if you dont have the complete data for every profile you want to upload, send us the info before to the next email
-        and we will check it and send you an answer the fast as posible. 
-
-        2.) If you have a documents you want to analyze to chat with does documents, go to our telegram bot read the instructions, 
-        upload the file and finally chat directly with our Watson AI. (This feature is in progress).
-    """
-    print(warning)
-    file_path = input("\nIntroduce la ruta del archivo CSV/TXT a subir (ej. leaks.txt): ").strip()
+    print(f"Investigating {query_type}: {query_value} in our database and internet...")
+    
+    headers = {
+        'accept': 'application/json',
+        'Authorization': f'Bearer {API_TOKEN}'
+    }
+    
+    params = {
+        'query_type': query_type,
+        'query_value': query_value
+    }
     
     try:
-        with open(file_path, "rb") as f:
-            print(f"Subiendo {file_path} a la base de datos...")
-            response = requests.post(f"{BASE_URL}/api/upload_csv", files={"file": f})
+        response = requests.get(f"{BASE_URL}/api/tools/search", headers=headers, params=params)
+        
+        if response.status_code == 200:
             print(json.dumps(response.json(), indent=2))
+        else:
+            print(f"Error {response.status_code}: {response.text}")
     except Exception as e:
-        print(f"Error al subir el archivo: {e}")
-
-def extract_username(email:str):
-    prov = email.split("@")
-    return prov[0]
+        print(f"Error connecting to server: {e}")
 
 def main_menu():
     while True:
         print("\n=== Menú de Peticiones OSINT/IA ===")
-        print("1. Read File to upload your data to our database")
-        print("2. Investigate email")
-        print("3. GET /api/osint/ip/{ip}")
-        print("4. POST /api/AI")
+        print("1. Investigate email")
+        print("2. Investigate IP")
+        print("3. Investigate username")
+        print("4. Investigate domain")
         print("5. Documentacion")
         print("6. Salir")
         
-        choice = input("Elige una opción (1-5): ").strip()
+        choice = input("Elige una opción (1-6): ").strip()
 
         if choice == "1":
-            print("Indicate the route of the file you want us to read.")
-            post_profile_soc()
-        elif choice == "2":
             email = input("Introduce el email: ").strip()
-            get_email_info(email)
-        elif choice == "3":
+            perform_search("email", email)
+        elif choice == "2":
             ip = input("Introduce la IP: ").strip()
-            get_ip_info(ip)
+            perform_search("ip", ip)
+        elif choice == "3":
+            username = input("Introduce el username: ").strip()
+            perform_search("username", username)
         elif choice == "4":
-            prompt = input("Introduce el prompt para la IA: ")
-            post_ai(prompt)
+            domain = input("Introduce el dominio: ").strip()
+            perform_search("domain", domain)
         elif choice == "5":
             docs()
-            print("Documentacion")
         elif choice == "6":
-            print("Thanks for use watson.")
+            print("Thanks for using watson.")
             break
-
         else:
             print("Opción no válida. Intenta de nuevo.")
 
@@ -160,7 +118,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Herramienta OSINT + AI")
     parser.add_argument("--email", help="Consulta información de un email")
     parser.add_argument("--ip", help="Consulta información de una IP")
-    parser.add_argument("--AI", help="Envía un prompt a la IA")
+    parser.add_argument("--username", help="Consulta información de un username")
+    parser.add_argument("--domain", help="Consulta información de un dominio")
     parser.add_argument("--Docs", action="store_true", help="Muestra la documentación")
     return parser.parse_args()
 
@@ -170,126 +129,12 @@ if __name__ == "__main__":
     if args.Docs:
         docs()
     elif args.email:
-        get_email_info(args.email)
+        perform_search("email", args.email)
     elif args.ip:
-        get_ip_info(args.ip)
-    elif args.AI:
-        post_ai(args.AI)
+        perform_search("ip", args.ip)
+    elif args.username:
+        perform_search("username", args.username)
+    elif args.domain:
+        perform_search("domain", args.domain)
     else:
         main_menu()
-
-
-
-
-
-"""
-import argparse
-import requests
-import json
-import sys
-
-BASE_URL = "http://localhost:8000"
-
-def post_profile_soc():
-    print("\n--- Enviar datos a /api/osint/profileSoc ---")
-    name = input("Nombre(s): ").split(",")
-    email = input("Email(s): ").split(",")
-    ip = input("IP(s): ").split(",")
-    username = input("Username(s): ").split(",")
-
-    payload = {
-        "name": [n.strip() for n in name if n.strip()],
-        "surname": [],
-        "email": [e.strip() for e in email if e.strip()],
-        "urls": [],
-        "ip": [i.strip() for i in ip if i.strip()],
-        "company": "",
-        "username": [u.strip() for u in username if u.strip()],
-        "phone": [],
-        "entity": "profile"
-    }
-
-    headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
-    try:
-        response = requests.post(f"{BASE_URL}/api/osint/profileSoc", headers=headers, json=payload)
-        print(json.dumps(response.json(), indent=2))
-    except Exception as e:
-        print(f"Error: {e}")
-
-def get_email_info(email):
-    try:
-        response = requests.get(f"{BASE_URL}/api/osint/email/{email}")
-        print(json.dumps(response.json(), indent=2))
-    except Exception as e:
-        print(f"Error: {e}")
-
-def get_ip_info(ip):
-    try:
-        response = requests.get(f"{BASE_URL}/api/osint/ip/{ip}")
-        print(json.dumps(response.json(), indent=2))
-    except Exception as e:
-        print(f"Error: {e}")
-
-def post_ai(prompt):
-    payload = {"prompt": prompt}
-    headers = {'accept': 'application/json', 'Content-Type': 'application/json'}
-    try:
-        response = requests.post(f"{BASE_URL}/api/AI", headers=headers, json=payload)
-        print(json.dumps(response.json(), indent=2))
-    except Exception as e:
-        print(f"Error: {e}")
-
-def main_menu():
-    while True:
-        print("\n=== Menú de Peticiones OSINT/IA ===")
-        print("1. POST /api/osint/profileSoc")
-        print("2. GET /api/osint/email/{email}")
-        print("3. GET /api/osint/ip/{ip}")
-        print("4. POST /api/AI")
-        print("5. Salir")
-        
-        choice = input("Elige una opción (1-5): ").strip()
-
-        if choice == "1":
-            post_profile_soc()
-        elif choice == "2":
-            email = input("Introduce el email: ").strip()
-            get_email_info(email)
-        elif choice == "3":
-            ip = input("Introduce la IP: ").strip()
-            get_ip_info(ip)
-        elif choice == "4":
-            prompt = input("Introduce el prompt para la IA: ")
-            post_ai(prompt)
-        elif choice == "5":
-            print("Saliendo del programa.")
-            break
-        else:
-            print("Opción no válida. Intenta de nuevo.")
-
-def parse_args():
-    parser = argparse.ArgumentParser(description="Herramienta OSINT + AI")
-    parser.add_argument("--email", help="Consulta información de un email")
-    parser.add_argument("--ip", help="Consulta información de una IP")
-    parser.add_argument("--AI", help="Envía un prompt a la IA")
-    parser.add_argument("--Docs", action="store_true", help="Muestra la documentación")
-    return parser.parse_args()
-
-if __name__ == "__main__":
-    args = parse_args()
-
-    if args.Docs:
-        show_docs()
-    elif args.email:
-        get_email_info(args.email)
-    elif args.ip:
-        get_ip_info(args.ip)
-    elif args.AI:
-        post_ai(args.AI)
-    else:
-        main_menu()
-
-
-
-
-"""
