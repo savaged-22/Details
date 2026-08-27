@@ -4,8 +4,6 @@ import json
 import sys
 import time
 import os
-
-# Importamos nuestro modulo de limpieza (debe estar en la misma carpeta)
 from watson_clean import limpiar_respuesta, _dominio_limpio
 
 try:
@@ -15,8 +13,16 @@ except ImportError:
     pass  # In case dotenv is not installed
 
 banner = """
-  W A T S O N
-  v 0.1.0"""
+  █     █░ ▄▄▄     ▄▄▄█████▓  ██████  ▒█████   ███▄    █
+▓█░ █ ░█░▒████▄   ▓  ██▒ ▓▒▒██    ▒ ▒██▒  ██▒ ██ ▀█   █
+▒█░ █ ░█ ▒██  ▀█▄ ▒ ▓██░ ▒░░ ▓██▄   ▒██░  ██▒▓██  ▀█ ██▒
+░█░ █ ░█ ░██▄▄▄▄██░ ▓██▓ ░   ▒   ██▒▒██   ██░▓██▒  ▐▌██▒
+░░██▒██▓ ▒▓█   ▓██  ▒██▒ ░ ▒██████▒▒░ ████▓▒░▒██░   ▓██░
+░ ▓░▒ ▒  ░▒▒   ▓▒█  ▒ ░░   ▒ ▒▓▒ ▒ ░░ ▒░▒░▒░ ░ ▒░   ▒ ▒
+  ▒ ░ ░  ░ ░   ▒▒     ░    ░ ░▒  ░ ░  ░ ▒ ▒░ ░ ░░   ░ ▒░
+  ░   ░    ░   ▒    ░      ░  ░  ░  ░ ░ ░ ▒     ░   ░ ░
+    ░          ░                 ░      ░ ░           ░
+v 0.1.0"""
 
 print(banner, "\n")
 BASE_URL = os.getenv("BASE_URL")
@@ -80,12 +86,18 @@ def perform_search(query_type: str, query_value: str, mostrar_crudo: bool = Fals
                 # Mostramos el resultado limpio al cliente
                 print(json.dumps(limpio, indent=2, ensure_ascii=False))
                 # Y lo guardamos en un JSON para compartir
+                results_dir = "Results"
+                if not os.path.exists(results_dir):
+                    os.makedirs(results_dir)
+                    
                 nombre_archivo = f"resultado_{query_type}_{query_value}.json"
                 # limpiar caracteres problematicos del nombre de archivo
                 nombre_archivo = nombre_archivo.replace("/", "_").replace("@", "_at_").replace(":", "_")
-                with open(nombre_archivo, "w", encoding="utf-8") as f:
+                ruta_archivo = os.path.join(results_dir, nombre_archivo)
+                
+                with open(ruta_archivo, "w", encoding="utf-8") as f:
                     json.dump(limpio, f, ensure_ascii=False, indent=2)
-                print(f"\n[+] Resultado limpio guardado en: {nombre_archivo}")
+                print(f"\n[+] Resultado limpio guardado en: {ruta_archivo}")
         else:
             print(f"Error {response.status_code}: {response.text}")
     except Exception as e:
