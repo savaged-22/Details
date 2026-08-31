@@ -4,6 +4,7 @@ import json
 import sys
 import time
 import os
+import re
 from watson_clean import limpiar_respuesta, _dominio_limpio
 
 try:
@@ -29,6 +30,19 @@ BASE_URL = os.getenv("BASE_URL")
 API_TOKEN = os.getenv("API_TOKEN")
 
 BANNER = "Remember every process takes time to our server."
+
+
+def _email_valido(email):
+    """
+    Verifica que el email tenga un formato basico valido:
+    algo@algo.algo  (usuario, @, dominio, punto, extension).
+    Evita gastar una consulta al servidor con entradas invalidas
+    como 'a' o 'hola' (sin dominio).
+    """
+    if not email:
+        return False
+    patron = r"^[^@\s]+@[^@\s]+\.[^@\s]+$"
+    return re.match(patron, email) is not None
 
 
 def docs():
@@ -57,6 +71,11 @@ def perform_search(query_type: str, query_value: str, mostrar_crudo: bool = Fals
     if query_type == "domain":
         query_value = _dominio_limpio(query_value)
 
+    # Si es email, validamos el formato ANTES de consultar al servidor
+    if query_type == "email" and not _email_valido(query_value):
+        print("Error: el email no es valido. Debe tener formato usuario@dominio.com")
+        return
+
     print(BANNER)
     print(f"Investigating {query_type}: {query_value} in our database and internet...")
 
@@ -76,7 +95,7 @@ def perform_search(query_type: str, query_value: str, mostrar_crudo: bool = Fals
         if response.status_code == 200:
             cruda = response.json()
 
-            # --- LIMPIEZA EN CALIENTE ---
+            # LIMPIEZA EN CALIENTE 
             # En vez de mostrar el crudo, lo limpiamos al vuelo.
             if mostrar_crudo:
                 # opcion interna para depurar: ver el crudo
@@ -89,12 +108,12 @@ def perform_search(query_type: str, query_value: str, mostrar_crudo: bool = Fals
                 results_dir = "Results"
                 if not os.path.exists(results_dir):
                     os.makedirs(results_dir)
-                    
+
                 nombre_archivo = f"resultado_{query_type}_{query_value}.json"
                 # limpiar caracteres problematicos del nombre de archivo
                 nombre_archivo = nombre_archivo.replace("/", "_").replace("@", "_at_").replace(":", "_")
                 ruta_archivo = os.path.join(results_dir, nombre_archivo)
-                
+
                 with open(ruta_archivo, "w", encoding="utf-8") as f:
                     json.dump(limpio, f, ensure_ascii=False, indent=2)
                 print(f"\n[+] Resultado limpio guardado en: {ruta_archivo}")
@@ -118,7 +137,11 @@ def main_menu():
 
         if choice == "1":
             email = input("Introduce el email: ").strip()
-            perform_search("email", email)
+            # Validamos el email antes de buscar
+            if not _email_valido(email):
+                print("Error: el email no es valido. Debe tener formato usuario@dominio.com")
+            else:
+                perform_search("email", email)
         elif choice == "2":
             ip = input("Introduce la IP: ").strip()
             perform_search("ip", ip)

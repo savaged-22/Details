@@ -1,6 +1,6 @@
 """
 
-WATSON - LIMPIEZA DE RESULTADOS 
+WATSON - LIMPIEZA DE RESULTADOS OSINT (en caliente)
 
 Procesa la respuesta CRUDA de la API de Watson y devuelve un
 resultado LIMPIO y unificado, listo para mostrar al cliente.
@@ -24,7 +24,6 @@ Uso:
 import json
 import unicodedata
 from collections import Counter
-
 
 
 # AUXILIARES
@@ -58,31 +57,7 @@ def _dominio_limpio(valor):
     v = v.split("/")[0]
     return v
 
-def _es_encontrado(registro):
-    """Decide si un registro representa un hallazgo positivo."""
-    if not isinstance(registro, dict):
-        return False
-    status = str(registro.get("status", "")).lower()
-    if status in ("found", "registered", "claimed"):
-        return True
-    if registro.get("exists") is True:
-        return True
-    if registro.get("confirmed") is True:
-        return True
-    return False
 
-
-def _filtrar_data(data):
-    """Filtra el 'data' dejando solo los registros encontrados."""
-    if not isinstance(data, dict):
-        return data
-    nuevo = {}
-    for clave, valor in data.items():
-        if isinstance(valor, list) and valor and isinstance(valor[0], dict):
-            nuevo[clave] = [r for r in valor if _es_encontrado(r)]
-        else:
-            nuevo[clave] = valor
-    return nuevo
 
 # LIMPIADOR: USERNAME
 
@@ -143,7 +118,6 @@ def _limpiar_username(cruda):
     }
 
 
-
 # LIMPIADOR: EMAIL
 
 def _limpiar_email(cruda):
@@ -193,7 +167,6 @@ def _limpiar_email(cruda):
         "cuentas": cuentas,
         "filtraciones": filtraciones,
     }
-
 
 
 # LIMPIADOR: DOMAIN
@@ -257,30 +230,34 @@ def _limpiar_domain(cruda):
     }
 
 
+
 # LIMPIADOR: IP  (defensivo: estructura aun no confirmada)
 
 def _limpiar_ip(cruda):
     """
-    ip: usa el formato CONSERVADOR (estructura completa + resumen
-    arriba + solo encontrados), a diferencia de los otros tipos que
-    usan formato filtrado/reconstruido.
-    Arma primero un resumen legible de la IP (pais, proveedor, riesgo)
-    y luego conserva la estructura original sin los nombres de las
-    herramientas.
+    ip: combina DOS fuentes complementarias -
+      - abuseipdb: reputacion (pais, proveedor, puntaje de abuso, reportes)
+      - internetdb/shodan: infraestructura (puertos abiertos, hostnames,
+        vulnerabilidades, tecnologias)
+    Devuelve resumen arriba + detalle util abajo (formato limpio).
     """
     query = cruda.get("query_value", "")
 
-    # Armamos el resumen legible de la IP
-    datos = {}
+    # Recorremos TODAS las fuentes y las clasificamos por su contenido
+    # (no asumimos orden: identificamos cada una por las claves que trae)
+    reputacion = {}
+    infraestructura = {}
     for fuente in cruda.get("sources", []):
         d = fuente.get("data", {}) or {}
-        if d:
-            datos = d
-            break
+        if not d:
+            continue
+        if "abuse_confidence_score" in d:
+            reputacion = d
+        if "ports" in d or "hostnames" in d or "vulns" in d:
+            infraestructura = d
 
-    puntaje_abuso = datos.get("abuse_confidence_score")
-
-    # Interpretamos el nivel de riesgo de forma legible
+    # Interpretar el nivel de riesgo por reputacion
+    puntaje_abuso = reputacion.get("abuse_confidence_score")
     if puntaje_abuso is None:
         riesgo = "desconocido"
     elif puntaje_abuso == 0:
@@ -292,37 +269,35 @@ def _limpiar_ip(cruda):
     else:
         riesgo = "alto"
 
-    resumen = {
-        "pais": datos.get("country_code"),
-        "proveedor": datos.get("isp"),
-        "puntaje_abuso": puntaje_abuso,
-        "nivel_riesgo": riesgo,
-        "total_reportes": datos.get("total_reports", 0),
-    }
-
-    # Conservamos la estructura, quitando source_name y filtrando data
-    sources_sin_nombre = []
-    for fuente in cruda.get("sources", []):
-        sources_sin_nombre.append({
-            "success": fuente.get("success"),
-            "from_cache": fuente.get("from_cache"),
-            "data": _filtrar_data(fuente.get("data", {})),
-            "error_message": fuente.get("error_message"),
-        })
-
-    # metadata: solo el 'raw' de cada bloque
-    metadata_solo_raw = []
-    for bloque in cruda.get("metadata", []):
-        metadata_solo_raw.append({"raw": bloque.get("raw", {})})
+    # Datos de infraestructura
+    puertos = infraestructura.get("ports", []) or []
+    hostnames = infraestructura.get("hostnames", []) or []
+    vulnerabilidades = infraestructura.get("vulns", []) or []
+    tecnologias = infraestructura.get("cpe", []) or []
 
     return {
-        "resumen": resumen,
-        "query_type": cruda.get("query_type"),
-        "query_value": query,
-        "queried_at": cruda.get("queried_at"),
-        "sources": sources_sin_nombre,
-        "summary": cruda.get("summary", {}),
-        "metadata": metadata_solo_raw,
+        "tipo": "ip",
+        "consultado": query,
+        "resumen": {
+            "pais": reputacion.get("country_code"),
+            "proveedor": reputacion.get("isp"),
+            "puntaje_abuso": puntaje_abuso,
+            "nivel_riesgo": riesgo,
+            "total_reportes": reputacion.get("total_reports", 0),
+            "puertos_abiertos": puertos,
+            "cantidad_hostnames": len(hostnames),
+            "tiene_vulnerabilidades": len(vulnerabilidades) > 0,
+            "cantidad_vulnerabilidades": len(vulnerabilidades),
+        },
+        "detalle": {
+            "es_publica": reputacion.get("is_public"),
+            "tipo_uso": reputacion.get("usage_type"),
+            "dominio": reputacion.get("domain"),
+            "ultimo_reporte": reputacion.get("last_reported_at"),
+            "hostnames": hostnames,
+            "vulnerabilidades": vulnerabilidades,
+            "tecnologias": tecnologias,
+        },
     }
 
 
@@ -363,4 +338,94 @@ def limpiar_a_json(cruda, ruta_salida=None):
             json.dump(limpio, f, ensure_ascii=False, indent=2)
     return limpio
 
+
+def _es_encontrado(registro):
+    """
+    Decide si un registro (de cualquier fuente) representa un
+    hallazgo positivo. Cada fuente usa su propia palabra:
+      - status: "Found" / "Registered" / "Claimed"
+      - exists: true
+      - confirmed: true
+    """
+    if not isinstance(registro, dict):
+        return False
+    status = str(registro.get("status", "")).lower()
+    if status in ("found", "registered", "claimed"):
+        return True
+    if registro.get("exists") is True:
+        return True
+    if registro.get("confirmed") is True:
+        return True
+    return False
+
+
+def _filtrar_data(data):
+    """
+    Recibe el 'data' de una source y devuelve una copia donde las
+    listas de registros (vectors, sites, records, etc.) quedan solo
+    con los encontrados. Lo que no es lista de registros se deja igual.
+    """
+    if not isinstance(data, dict):
+        return data
+
+    nuevo = {}
+    for clave, valor in data.items():
+        # Si es una lista de diccionarios, la filtramos por encontrados
+        if isinstance(valor, list) and valor and isinstance(valor[0], dict):
+            filtrada = [r for r in valor if _es_encontrado(r)]
+            nuevo[clave] = filtrada
+        else:
+            # cualquier otra cosa (dict, numero, texto) se deja igual
+            nuevo[clave] = valor
+    return nuevo
+
+
+
+# VERSION ALTERNATIVA (idea del usuario): conservar casi todo el
+# crudo, quitando solo los nombres de herramientas, + resumen arriba.
+
+def limpiar_conservador(cruda):
+    """
+    Mantiene la estructura original casi completa:
+      - Conserva query_type, query_value, queried_at.
+      - En cada source: quita 'source_name', deja success, from_cache,
+        data (COMPLETO, con todo el ruido), error_message.
+      - Conserva todo el summary.
+      - En metadata: quita 'source', deja solo 'raw'.
+      - Agrega un 'resumen' al inicio (reusa los limpiadores por tipo).
+    """
+    if not isinstance(cruda, dict):
+        return {"error": "La respuesta cruda no es un objeto valido."}
+
+    # 1) Sacamos el resumen reutilizando el limpiador especifico del tipo
+    limpio_tipo = limpiar_respuesta(cruda)
+    resumen = limpio_tipo.get("resumen", {}) if isinstance(limpio_tipo, dict) else {}
+
+    # 2) Reconstruimos las sources SIN el source_name y con el data
+    #    FILTRADO (solo los encontrados)
+    sources_sin_nombre = []
+    for fuente in cruda.get("sources", []):
+        nueva = {
+            "success": fuente.get("success"),
+            "from_cache": fuente.get("from_cache"),
+            "data": _filtrar_data(fuente.get("data", {})),   # solo encontrados
+            "error_message": fuente.get("error_message"),
+        }
+        sources_sin_nombre.append(nueva)
+
+    # 3) Metadata: dejamos solo el 'raw' de cada bloque
+    metadata_solo_raw = []
+    for bloque in cruda.get("metadata", []):
+        metadata_solo_raw.append({"raw": bloque.get("raw", {})})
+
+    # 4) Armamos el resultado final con el resumen ARRIBA
+    return {
+        "resumen": resumen,
+        "query_type": cruda.get("query_type"),
+        "query_value": cruda.get("query_value"),
+        "queried_at": cruda.get("queried_at"),
+        "sources": sources_sin_nombre,
+        "summary": cruda.get("summary", {}),
+        "metadata": metadata_solo_raw,
+    }
 
