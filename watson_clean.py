@@ -22,7 +22,9 @@ Uso:
 """
 
 import json
+import os
 import unicodedata
+from datetime import datetime
 from collections import Counter
 
 
@@ -339,6 +341,51 @@ def limpiar_a_json(cruda, ruta_salida=None):
     return limpio
 
 
+def guardar_para_dataset(consultado, tipo, cruda, carpeta=None):
+    """
+    Guarda UNA busqueda CRUDA en su propio archivo, dentro de la
+    carpeta que le corresponde a su tipo. Asi cada tipo de busqueda
+    (email, ip, username, domain) acumula sus datos por separado.
+    NO limpia ni filtra nada: el crudo es la fuente de la verdad.
+    Devuelve la ruta, o None si algo fallo.
+    """
+    # Cada tipo tiene SU carpeta. El email conserva 'dataset_emails',
+    # la misma que ya venias usando (no se mueve nada).
+    carpetas = {
+        "email": "dataset_emails",
+        "ip": "dataset_ips",
+        "username": "dataset_usernames",
+        "domain": "dataset_domains",
+    }
+    try:
+        # si no nos pasan una carpeta a mano, la elegimos segun el tipo
+        if carpeta is None:
+            carpeta = carpetas.get(tipo, f"dataset_{tipo}")
+
+        os.makedirs(carpeta, exist_ok=True)   # crea la carpeta si no existe
+
+        # marca de tiempo hasta microsegundos -> nombre unico, sin choques
+        marca = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        ruta = os.path.join(carpeta, f"{tipo}_{marca}.json")
+
+        # el "sobre": metadatos afuera + el crudo adentro
+        registro = {
+            "consultado": consultado,
+            "tipo": tipo,
+            "timestamp": datetime.now().isoformat(),
+            "cruda": cruda,
+        }
+
+        with open(ruta, "w", encoding="utf-8") as f:
+            json.dump(registro, f, ensure_ascii=False, indent=2)
+
+        return ruta
+    except Exception as e:
+        # si falla el guardado, NO tumbamos la busqueda: solo avisamos
+        print(f"[aviso] no se pudo guardar el dataset: {e}")
+        return None
+
+
 def _es_encontrado(registro):
     """
     Decide si un registro (de cualquier fuente) representa un
@@ -428,4 +475,3 @@ def limpiar_conservador(cruda):
         "summary": cruda.get("summary", {}),
         "metadata": metadata_solo_raw,
     }
-

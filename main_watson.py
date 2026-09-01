@@ -5,7 +5,7 @@ import sys
 import time
 import os
 import re
-from watson_clean import limpiar_respuesta, _dominio_limpio
+from watson_clean import limpiar_respuesta, _dominio_limpio, guardar_para_dataset
 
 try:
     from dotenv import load_dotenv
@@ -94,6 +94,11 @@ def perform_search(query_type: str, query_value: str, mostrar_crudo: bool = Fals
 
         if response.status_code == 200:
             cruda = response.json()
+
+            # RECOLECCION PARA ML: guardamos el crudo de CADA busqueda.
+            # Cada tipo cae en su propia carpeta; eso lo decide
+            # guardar_para_dataset segun el 'query_type'.
+            guardar_para_dataset(query_value, query_type, cruda)
 
             # LIMPIEZA EN CALIENTE 
             # En vez de mostrar el crudo, lo limpiamos al vuelo.
