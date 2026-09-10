@@ -5,6 +5,7 @@ import sys
 import time
 import os
 import re
+from concurrent.futures import ThreadPoolExecutor
 from watson_clean import limpiar_respuesta, _dominio_limpio, guardar_para_dataset
 
 try:
@@ -128,6 +129,95 @@ def perform_search(query_type: str, query_value: str, mostrar_crudo: bool = Fals
         print(f"Error connecting to server: {e}")
 
 
+def _buscar_uno(query_type, query_value):
+    """
+    Hace UNA sola busqueda a la API y devuelve el resultado LIMPIO.
+    Devuelve None si falla. No imprime el resultado ni guarda archivo
+    (eso lo maneja buscar_persona). Se usa dentro del ThreadPool.
+    """
+    if query_type == "domain":
+        query_value = _dominio_limpio(query_value)
+
+    if query_type == "email" and not _email_valido(query_value):
+        print(f"  [!] Email invalido, se omite: {query_value}")
+        return None
+
+    headers = {
+        'accept': 'application/json',
+        'Authorization': f'Bearer {API_TOKEN}'
+    }
+
+    params = {
+        'query_type': query_type,
+        'query_value': query_value
+    }
+
+    try:
+        response = requests.get(f"{BASE_URL}/api/tools/search", headers=headers, params=params)
+
+        if response.status_code == 200:
+            return limpiar_respuesta(response.json())
+        else:
+            print(f"  [!] Error {response.status_code} en {query_type}: {query_value}")
+            return None
+    except Exception as e:
+        print(f"  [!] Error de conexion en {query_type} ({query_value}): {e}")
+        return None
+
+
+def buscar_persona(username, ip, email):
+    """
+    Busca EN PARALELO (ThreadPool) los datos proporcionados de una
+    persona y guarda TODO junto en un solo archivo en Results/.
+    Cualquier dato puede quedar vacio: solo se busca lo que se llene.
+    """
+    tareas = []
+    if username:
+        tareas.append(("username", username))
+    if ip:
+        tareas.append(("ip", ip))
+    if email:
+        tareas.append(("email", email))
+
+    if not tareas:
+        print("No ingresaste ningun dato para buscar.")
+        return None
+
+    print(BANNER)
+    print(f"Investigando persona ({len(tareas)} busqueda(s) en paralelo)...")
+
+    resultados = {}
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futuros = {executor.submit(_buscar_uno, tipo, valor): tipo for tipo, valor in tareas}
+        for futuro in futuros:
+            tipo = futuros[futuro]
+            resultados[tipo] = futuro.result()
+
+    investigacion = {}
+    for tipo in ("username", "ip", "email"):
+        if resultados.get(tipo) is not None:
+            investigacion[tipo] = resultados[tipo]
+
+    if not investigacion:
+        print("No se obtuvo ningun resultado.")
+        return None
+
+    print(json.dumps(investigacion, indent=2, ensure_ascii=False))
+
+    results_dir = "Results"
+    if not os.path.exists(results_dir):
+        os.makedirs(results_dir)
+
+    referencia = username or ip or email or "persona"
+    nombre_archivo = f"persona_{referencia}.json"
+    nombre_archivo = nombre_archivo.replace("/", "_").replace("@", "_at_").replace(":", "_")
+    ruta_archivo = os.path.join(results_dir, nombre_archivo)
+
+    with open(ruta_archivo, "w", encoding="utf-8") as f:
+        json.dump(investigacion, f, ensure_ascii=False, indent=2)
+    print(f"\n[+] Investigacion guardada en: {ruta_archivo}")
+
+
 def main_menu():
     while True:
         print("\n=== Menu de Peticiones OSINT/IA ===")
@@ -136,9 +226,10 @@ def main_menu():
         print("3. Investigate username")
         print("4. Investigate domain")
         print("5. Documentacion")
-        print("6. Salir")
+        print("6. Investigar persona (username + ip + email en paralelo)")
+        print("7. Salir")
 
-        choice = input("Elige una opcion (1-6): ").strip()
+        choice = input("Elige una opcion (1-7): ").strip()
 
         if choice == "1":
             email = input("Introduce el email: ").strip()
@@ -159,6 +250,12 @@ def main_menu():
         elif choice == "5":
             docs()
         elif choice == "6":
+            print("Deja en blanco los datos que no tengas (solo Enter).")
+            username = input("Username: ").strip()
+            ip = input("IP: ").strip()
+            email = input("Email: ").strip()
+            buscar_persona(username=username or None, ip=ip or None, email=email or None)
+        elif choice == "7":
             print("Thanks for using watson.")
             break
         else:
